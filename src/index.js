@@ -17,9 +17,11 @@ app.use(express.static(publicDirectoryPath));
 io.on("connection", (socket) => {
   console.log("New web socket connection!");
 
-  socket.on("sendMessage", (message) => {
+  socket.on("sendMessage", (message, callback) => {
     io.emit("receiveMessage", message);
+    callback();
   });
+
 });
 
 server.listen(port, () => {

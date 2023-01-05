@@ -1,13 +1,38 @@
 const socket = io();
 
-document.querySelector("#message-form").addEventListener("submit", (e) => {
-  e.preventDefault();
+// Elements
+const $messageForm = document.querySelector("#message-form");
+const $messageFormInput = $messageForm.querySelector("input");
+const $messageFormButton = $messageForm.querySelector("button");
+const $messages = document.querySelector("#messages");
 
-  const message = e.target.elements.message.value;
-
-  socket.emit("sendMessage", message);
-});
+const messageTemplate = document.querySelector('#message-template').innerHTML;
 
 socket.on("receiveMessage", (message) => {
   console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
+
+$messageForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  $messageFormButton.setAttribute('disabled', 'disabled');
+
+  const message = e.target.elements.message.value;
+
+  socket.emit("sendMessage", message, (err) => {
+
+    $messageFormButton.removeAttribute('disabled');
+    $messageFormInput.value = '';
+    $messageFormInput.focus();
+
+    if(err){
+      return console.log(err);
+    }
+    console.log("The message was delivered.", message)
+  });
+});
+
