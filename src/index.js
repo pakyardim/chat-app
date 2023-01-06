@@ -19,6 +19,7 @@ io.on("connection", (socket) => {
   console.log("New web socket connection!");
 
   socket.emit('message', generateMessage("Welcome!"));
+  socket.broadcast.emit('message', generateMessage("A new user has joined!"));
 
   socket.on("sendMessage", (message, callback) => {
     io.emit("message", generateMessage(message));

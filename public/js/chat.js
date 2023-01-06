@@ -8,6 +8,7 @@ const $messages = document.querySelector("#messages");
 
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 
+
 socket.on("message", (message) => {
   const html = Mustache.render(messageTemplate, {
     message: message.text,
@@ -36,4 +37,3 @@ $messageForm.addEventListener("submit", (e) => {
     console.log("The message was delivered.", message)
   });
 });
-
