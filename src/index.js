@@ -2,7 +2,6 @@ const http = require("http");
 const express = require("express");
 const path = require("path");
 const socketio = require("socket.io");
-const {generateMessage}= require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app);
@@ -18,10 +17,8 @@ app.use(express.static(publicDirectoryPath));
 io.on("connection", (socket) => {
   console.log("New web socket connection!");
 
-  socket.emit('message', generateMessage("Welcome!"));
-
   socket.on("sendMessage", (message, callback) => {
-    io.emit("message", generateMessage(message));
+    io.emit("receiveMessage", message);
     callback();
   });
 
