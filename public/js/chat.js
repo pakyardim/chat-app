@@ -13,6 +13,7 @@ const {username, room } = Object.fromEntries(new URLSearchParams(location.search
 
 socket.on("message", (message) => {
   const html = Mustache.render(messageTemplate, {
+    username: message.username,
     message: message.text,
     createdAt: moment(message.createdAt).format('h:mm a')
   });
@@ -40,4 +41,6 @@ $messageForm.addEventListener("submit", (e) => {
   });
 });
 
-socket.emit('join', { username, room });
+socket.emit('join', { username, room }, (error) => {
+
+});
