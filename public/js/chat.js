@@ -7,6 +7,7 @@ const $messageFormButton = $messageForm.querySelector("button");
 const $messages = document.querySelector("#messages");
 
 const messageTemplate = document.querySelector('#message-template').innerHTML;
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 const {username, room } = Object.fromEntries(new URLSearchParams(location.search));
 
@@ -20,6 +21,14 @@ socket.on("message", (message) => {
   $messages.insertAdjacentHTML('beforeend', html)
 })
 
+socket.on('roomData', ({ room, users }) => {
+  const html = Mustache.render(sidebarTemplate, {
+    room,
+    users
+  })
+
+  document.querySelector('#sidebar').innerHTML = html
+})
 
 $messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
