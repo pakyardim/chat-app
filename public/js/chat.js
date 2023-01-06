@@ -8,6 +8,8 @@ const $messages = document.querySelector("#messages");
 
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 
+const {username, room } = Object.fromEntries(new URLSearchParams(location.search));
+
 
 socket.on("message", (message) => {
   const html = Mustache.render(messageTemplate, {
@@ -37,3 +39,5 @@ $messageForm.addEventListener("submit", (e) => {
     console.log("The message was delivered.", message)
   });
 });
+
+socket.emit('join', { username, room });
